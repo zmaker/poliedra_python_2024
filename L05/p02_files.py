@@ -1,0 +1,11 @@
+print("scrittura file")
+f = open("dati2.txt", 'w')
+f.write("linea 1\n")
+f.write("linea 2\n")
+f.write("linea 3\n")
+f.close()
+
+print("lettura file")
+f = open("dati2.txt")
+print(f.read())
+f.close()
