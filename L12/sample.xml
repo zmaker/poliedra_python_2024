@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<negozio cod="123" type="fruttaeverdura">
+    <scaffali>
+        <scaffale>
+            <prodotto cod=123 qty=12>mela</prodotto>
+            <prodotto cod=345 qty=34>pera</prodotto>
+        </scaffale>
+
+        <scaffale>
+        </scaffale>
+
+        <scaffale>
+        </scaffale>
+    </scaffali>
+</negozio>
