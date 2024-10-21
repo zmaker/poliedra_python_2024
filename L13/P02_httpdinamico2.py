@@ -1,5 +1,5 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from datetime import datetime
+from urllib.parse import urlparse, parse_qs
 
 class myRequestHandler(BaseHTTPRequestHandler):
     
@@ -8,22 +8,40 @@ class myRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/html")
         self.end_headers()
         
-        dt = datetime.now()
-        data = dt.strftime("%d/%m/%Y %H:%M:%S")
+        #print(self.path)
+        data = urlparse(self.path)
+        param = parse_qs(data.query)
+        print(param)
         
-        msg = "<html>"
-        msg += "<head>"
-        msg += "<title>Ora Esatta</title>"
-        msg += "<meta http-equiv='refresh' content='1'>"
-        msg += "</head>"
-        msg += "<body>"
-        msg += "<h1>"
-        msg += data
-        msg += "</h1>"
-        msg += "</body>"
-        msg += "</html>"
+        msg = "Stato LED: "
+        state = "off"
+        color = "white"
         
-        self.wfile.write( bytes(msg, "utf8") )
+        page = "<html>"
+        page += "<head>"
+        page += "<title>Pagina dinamica</title>"
+        page += "</head>"
+        page += "<body>"
+        
+        if "/led" in self.path:
+            if 'state' in param:
+                state = param['state'][0]
+            if 'color' in param:
+                color = param['color'][0]
+            
+            if (state == 'on'):
+                msg += "ACCESO"
+            else:
+                msg += "SPENTO"
+        
+        page += "<h1>"
+        page += msg
+        page += "</h1>"
+        page += f"<div style='width:50; height:50; background:{color}'></div>"
+        page += "</body>"
+        page += "</html>"
+        
+        self.wfile.write( bytes(page, "utf8") )
         return
                                         
 import socket
